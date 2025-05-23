@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Galería de Trabajos - Puertas para Entrada</title>
+  <!-- Justified Gallery CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css">
+  <!-- Remixicon para el icono de WhatsApp -->
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet">
+  <!-- TailwindCSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- jQuery + Justified Gallery JS -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js"></script>
+</head>
+<body class="bg-white">
+  <div class="max-w-7xl mx-auto p-6">
+    <h1 class="text-3xl font-bold text-gray-800 mb-6">Galería de Trabajos</h1>
+    <div id="galeria" class="justified-gallery"></div>
+  </div>
+
+  <script>
+    // Lista de URLs de las imágenes
+    const imagenes = [
+      "https://images.unsplash.com/photo-1606813902917-0c99a841d277?auto=format&fit=crop&w=800&q=80",
+      "https://cantol.com.pe/wp-content/uploads/2025/01/manija-cuadrada-embutir.png",
+      "https://http2.mlstatic.com/D_NQ_NP_2X_944191-MPE80716073985_112024-F-porton-de-madera-con-sistema-seccional-lift-master.webp",
+      "https://mayer.pe/wp-content/uploads/2023/11/Puerta-Principal-de-Madera-Cedro-mayer.pe1_.png",
+      // ... añade más URLs aquí
+    ];
+
+    const galeria = document.getElementById("galeria");
+    imagenes.forEach(url => {
+      // Creamos un contenedor <a> por cada imagen (obligatorio para Justified Gallery)
+      const item = document.createElement("a");
+      item.href = url;
+      item.className = "group relative block";
+      item.innerHTML = `
+        <img src="${url}" alt="Puerta" class="block w-auto h-auto">
+        <!-- Overlay con botón WhatsApp -->
+        <div class="absolute inset-0 bg-green-600 bg-opacity-75 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+          <a 
+            href="https://wa.me/51948660856?text=¡Hola!%20me%20interesa%20esta%20puerta" 
+            target="_blank" 
+            class="inline-flex items-center gap-2 bg-white bg-opacity-90 hover:bg-opacity-100 text-green-600 font-semibold px-4 py-2 rounded-full"
+          >
+            <i class="ri-whatsapp-line ri-lg"></i>
+            Consultar
+          </a>
+        </div>
+      `;
+      galeria.appendChild(item);
+    });
+
+    // Inicializamos Justified Gallery
+    $(document).ready(function () {
+      $('#galeria').justifiedGallery({
+        rowHeight: 200,
+        margins: 5
+      });
+    });
+  </script>
+</body>
+</html>
+
