@@ -2,11 +2,9 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Galería de Trabajos - Puertas para Entrada</title>
+  <title>Galería de Trabajos - Carpintería</title>
   <!-- Justified Gallery CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css">
-  <!-- Remixicon para el icono de WhatsApp -->
-  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet">
   <!-- TailwindCSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- jQuery + Justified Gallery JS -->
@@ -15,51 +13,70 @@
 </head>
 <body class="bg-white">
   <div class="max-w-7xl mx-auto p-6">
-    <h1 class="text-3xl font-bold text-gray-800 mb-6">Galería de Trabajos</h1>
-    <div id="galeria" class="justified-gallery"></div>
+    <h1 class="text-3xl font-bold text-gray-800 mb-10">Galería de Trabajos</h1>
+
+    <!-- Puertas de Entrada -->
+    <section class="mb-12">
+      <h2 class="text-2xl font-semibold text-gray-700 mb-4">Puertas de Entrada</h2>
+      <div id="entrada" class="justified-gallery"></div>
+    </section>
+
+    <!-- Puertas Contraplacadas -->
+    <section class="mb-12">
+      <h2 class="text-2xl font-semibold text-gray-700 mb-4">Puertas Contraplacadas</h2>
+      <div id="contraplacadas" class="justified-gallery"></div>
+    </section>
+
+    <!-- Portones de Garaje -->
+    <section class="mb-12">
+      <h2 class="text-2xl font-semibold text-gray-700 mb-4">Portones de Garaje</h2>
+      <div id="garaje" class="justified-gallery"></div>
+    </section>
   </div>
 
   <script>
-    // Lista de URLs de las imágenes
-    const imagenes = [
-      "porton1",
-      "porton2",
-      "porton3",
-      "contra1",
-      // ... añade más URLs aquí
+    const imagenesEntrada = [
+      "entrada1.jpg",
+      "entrada2.jpg"
+      // Añade más URLs aquí
     ];
 
-    const galeria = document.getElementById("galeria");
-    imagenes.forEach(url => {
-      // Creamos un contenedor <a> por cada imagen (obligatorio para Justified Gallery)
-      const item = document.createElement("a");
-      item.href = url;
-      item.className = "group relative block";
-      item.innerHTML = `
-        <img src="${url}" alt="Puerta" class="block w-auto h-auto">
-        <!-- Overlay con botón WhatsApp -->
-        <div class="absolute inset-0 bg-green-600 bg-opacity-75 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-          <a 
-            href="https://wa.me/51948660856?text=¡Hola!%20me%20interesa%20esta%20puerta" 
-            target="_blank" 
-            class="inline-flex items-center gap-2 bg-white bg-opacity-90 hover:bg-opacity-100 text-green-600 font-semibold px-4 py-2 rounded-full"
-          >
-            <i class="ri-whatsapp-line ri-lg"></i>
-            Consultar
-          </a>
-        </div>
-      `;
-      galeria.appendChild(item);
-    });
+    const imagenesContraplacadas = [
+      "contra1.jpg",
+      "contra2.jpg"
+      // Añade más URLs aquí
+    ];
 
-    // Inicializamos Justified Gallery
-    $(document).ready(function () {
-      $('#galeria').justifiedGallery({
-        rowHeight: 200,
-        margins: 5
+    const imagenesGaraje = [
+      "porton1.jpg",
+      "porton2.jpg"
+      // Añade más URLs aquí
+    ];
+
+    function cargarGaleria(id, imagenes) {
+      const contenedor = document.getElementById(id);
+      imagenes.forEach(url => {
+        const item = document.createElement("a");
+        item.href = url;
+        item.className = "block";
+        item.innerHTML = `<img src="${url}" alt="Imagen de carpintería" class="block w-auto h-auto">`;
+        contenedor.appendChild(item);
       });
+    }
+
+    // Cargar imágenes
+    cargarGaleria("entrada", imagenesEntrada);
+    cargarGaleria("contraplacadas", imagenesContraplacadas);
+    cargarGaleria("garaje", imagenesGaraje);
+
+    // Inicializar galerías
+    $(document).ready(function () {
+      $('#entrada').justifiedGallery({ rowHeight: 200, margins: 5 });
+      $('#contraplacadas').justifiedGallery({ rowHeight: 200, margins: 5 });
+      $('#garaje').justifiedGallery({ rowHeight: 200, margins: 5 });
     });
   </script>
 </body>
 </html>
+
 
