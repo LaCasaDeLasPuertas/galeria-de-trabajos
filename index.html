@@ -1,93 +1,56 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Galería de Trabajos - Carpintería</title>
-  <!-- Justified Gallery CSS -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css">
-  <!-- TailwindCSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- jQuery + Justified Gallery JS -->
-  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js"></script>
 </head>
-<body class="bg-white">
-  <div class="max-w-7xl mx-auto p-6">
-    <h1 class="text-3xl font-bold text-gray-800 mb-10">Galería de Trabajos</h1>
+<body class="bg-white text-gray-800">
+  <div class="max-w-7xl mx-auto p-6 space-y-10">
+    <h1 class="text-4xl font-bold mb-6">Galería de Trabajos</h1>
 
-    <!-- Puertas de Entrada -->
-    <section class="mb-12">
-      <h2 class="text-2xl font-semibold text-gray-700 mb-4">Puertas de Entrada</h2>
-      <div id="entrada" class="justified-gallery"></div>
+    <!-- Sección: Puertas de Entrada -->
+    <section>
+      <h2 class="text-2xl font-semibold mb-4">Puertas de Entrada</h2>
+      <div class="overflow-x-auto whitespace-nowrap space-x-4 flex pb-4">
+        <img src="madera1" class="h-72 rounded shadow-md" alt="Puerta madera1">
+        <img src="madera2" class="h-72 rounded shadow-md" alt="Puerta madera2">
+        <img src="madera3" class="h-72 rounded shadow-md" alt="Puerta madera3">
+        <img src="madera4" class="h-72 rounded shadow-md" alt="Puerta madera4">
+        <img src="madera5" class="h-72 rounded shadow-md" alt="Puerta madera5">
+        <img src="madera6" class="h-72 rounded shadow-md" alt="Puerta madera6">
+        <img src="madera7" class="h-72 rounded shadow-md" alt="Puerta madera7">
+      </div>
     </section>
 
-    <!-- Puertas Contraplacadas -->
-    <section class="mb-12">
-      <h2 class="text-2xl font-semibold text-gray-700 mb-4">Puertas Contraplacadas</h2>
-      <div id="contraplacadas" class="justified-gallery"></div>
+    <!-- Sección: Puertas Contraplacadas -->
+    <section>
+      <h2 class="text-2xl font-semibold mb-4">Puertas Contraplacadas</h2>
+      <div class="overflow-x-auto whitespace-nowrap space-x-4 flex pb-4">
+        <img src="contra1" class="h-72 rounded shadow-md" alt="Puerta contraplacada 1">
+        <img src="contra2" class="h-72 rounded shadow-md" alt="Puerta contraplacada 2">
+        <img src="contra3" class="h-72 rounded shadow-md" alt="Puerta contraplacada 3">
+        <img src="contra4" class="h-72 rounded shadow-md" alt="Puerta contraplacada 4">
+        <img src="contra5" class="h-72 rounded shadow-md" alt="Puerta contraplacada 5">
+        <img src="contra6" class="h-72 rounded shadow-md" alt="Puerta contraplacada 6">
+        <img src="contra7" class="h-72 rounded shadow-md" alt="Puerta contraplacada 7">
+      </div>
     </section>
 
-    <!-- Portones de Garaje -->
-    <section class="mb-12">
-      <h2 class="text-2xl font-semibold text-gray-700 mb-4">Portones de Garaje</h2>
-      <div id="garaje" class="justified-gallery"></div>
+    <!-- Sección: Portones de Garaje -->
+    <section>
+      <h2 class="text-2xl font-semibold mb-4">Portones de Garaje</h2>
+      <div class="overflow-x-auto whitespace-nowrap space-x-4 flex pb-4">
+        <img src="porton1" class="h-72 rounded shadow-md" alt="Portón 1">
+        <img src="porton2" class="h-72 rounded shadow-md" alt="Portón 2">
+        <img src="porton3" class="h-72 rounded shadow-md" alt="Portón 3">
+        <img src="porton4" class="h-72 rounded shadow-md" alt="Portón 4">
+        <img src="porton5" class="h-72 rounded shadow-md" alt="Portón 5">
+        <img src="porton6" class="h-72 rounded shadow-md" alt="Portón 6">
+        <img src="porton7" class="h-72 rounded shadow-md" alt="Portón 7">
+      </div>
     </section>
   </div>
-
-  <script>
-    const imagenesEntrada = [
-      "madera1",
-      "madera2",
-      "madera3"
-      // Añade más URLs aquí
-    ];
-
-    const imagenesContraplacadas = [
-      "contra1",
-      "contra2",
-      "contra3",
-      "contra4",
-      "contra5",
-      "contra6",
-      "contra7"
-      // Añade más URLs aquí
-    ];
-
-    const imagenesGaraje = [
-      "porton1",
-      "porton2",
-      "porton3",
-      "porton4",
-      "porton5",
-      "porton6",
-      "porton7"
-      // Añade más URLs aquí
-    ];
-
-    function cargarGaleria(id, imagenes) {
-      const contenedor = document.getElementById(id);
-      imagenes.forEach(url => {
-        const item = document.createElement("a");
-        item.href = url;
-        item.className = "block";
-        item.innerHTML = `<img src="${url}" alt="Imagen de carpintería" class="block w-auto h-auto">`;
-        contenedor.appendChild(item);
-      });
-    }
-
-    // Cargar imágenes
-    cargarGaleria("entrada", imagenesEntrada);
-    cargarGaleria("contraplacadas", imagenesContraplacadas);
-    cargarGaleria("garaje", imagenesGaraje);
-
-    // Inicializar galerías
-    $(document).ready(function () {
-      $('#entrada').justifiedGallery({ rowHeight: 200, margins: 5 });
-      $('#contraplacadas').justifiedGallery({ rowHeight: 200, margins: 5 });
-      $('#garaje').justifiedGallery({ rowHeight: 200, margins: 5 });
-    });
-  </script>
 </body>
 </html>
-
 
