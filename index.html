@@ -40,9 +40,9 @@
   <main class="max-w-7xl mx-auto px-4 py-6 space-y-12">
     <!-- Filtros -->
     <div class="flex flex-wrap justify-center gap-4 mb-8">
-      <button class="filtro-btn px-4 py-2 border rounded-full text-sm font-semibold transition bg-gray-900 text-white" onclick="filtrar('entrada')">Puertas de Entrada</button>
-      <button class="filtro-btn px-4 py-2 border rounded-full text-sm font-semibold transition bg-gray-900 text-white" onclick="filtrar('contraplacada')">Puertas Contraplacadas</button>
-      <button class="filtro-btn px-4 py-2 border rounded-full text-sm font-semibold transition bg-gray-900 text-white" onclick="filtrar('porton')">Portones de Garaje</button>
+      <button class="filtro-btn px-4 py-2 border rounded-full text-sm font-semibold transition" data-categoria="entrada" onclick="filtrar('entrada')">Puertas de Entrada</button>
+      <button class="filtro-btn px-4 py-2 border rounded-full text-sm font-semibold transition" data-categoria="contraplacada" onclick="filtrar('contraplacada')">Puertas Contraplacadas</button>
+      <button class="filtro-btn px-4 py-2 border rounded-full text-sm font-semibold transition" data-categoria="porton" onclick="filtrar('porton')">Portones de Garaje</button>
     </div>
 
     <!-- Galería -->
@@ -57,7 +57,6 @@
   <!-- Pie de página -->
   <footer class="bg-gray-900 text-white py-12 mt-12">
     <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-12">
-      <!-- Información de Contacto -->
       <div>
         <h3 class="text-xl font-bold mb-4 border-b border-white pb-2">Información de Contacto</h3>
         <p class="flex items-start mb-3">
@@ -69,8 +68,6 @@
           +51 948 660 856
         </p>
       </div>
-
-      <!-- Horarios -->
       <div>
         <h3 class="text-xl font-bold mb-4 border-b border-white pb-2">Horarios de Atención</h3>
         <p class="flex items-start mb-1">
@@ -85,10 +82,8 @@
           <i class="ri-time-line text-white mr-2 mt-1"></i>
           Domingos: Cerrado
         </p>
-        <p class="text-sm text-gray-400"></p>
       </div>
     </div>
-
     <div class="border-t border-gray-800 pt-6 text-center text-sm text-gray-400">
       <p>© 2025 La Casa de las Puertas. Todos los derechos reservados.</p>
     </div>
@@ -114,7 +109,6 @@
 
     function renderGaleria(filtro = 'entrada') {
       galeria.innerHTML = '';
-
       Object.entries(secciones).forEach(([clave, { titulo, imagenes }]) => {
         if (filtro !== 'todo' && filtro !== clave) return;
 
@@ -146,18 +140,14 @@
       });
     }
 
-    renderGaleria();
-    document.querySelector('.filtro-btn:nth-child(1)').classList.add('filtro-activo');
+    renderGaleria(); // Carga inicial
+    document.querySelector('[data-categoria="entrada"]').classList.add('filtro-activo');
 
     function scrollCarrusel(id, direccion) {
       const contenedor = document.getElementById(id);
       const items = contenedor.querySelectorAll('img');
       const itemWidth = items[0].offsetWidth + 16;
-
-      contenedor.scrollBy({
-        left: direccion * itemWidth,
-        behavior: 'smooth'
-      });
+      contenedor.scrollBy({ left: direccion * itemWidth, behavior: 'smooth' });
     }
 
     const lightbox = document.getElementById("lightbox");
@@ -177,9 +167,12 @@
     function filtrar(categoria) {
       renderGaleria(categoria);
       botonesFiltro.forEach(btn => btn.classList.remove('filtro-activo'));
-      const botonActivo = Array.from(botonesFiltro).find(btn => btn.textContent.toLowerCase().includes(categoria));
-      if (botonActivo) botonActivo.classList.add('filtro-activo');
+      const botonActivo = document.querySelector(`.filtro-btn[data-categoria="${categoria}"]`);
+      if (botonActivo) {
+        botonActivo.classList.add('filtro-activo');
+      }
     }
   </script>
 </body>
 </html>
+
