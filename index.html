@@ -108,7 +108,7 @@
     function renderGaleria(filtro = 'todo') {
       galeria.innerHTML = '';
 
-      Object.entries(secciones).forEach(([clave, { titulo, imagenes }], index) => {
+      Object.entries(secciones).forEach(([clave, { titulo, imagenes }]) => {
         if (filtro !== 'todo' && filtro !== clave) return;
 
         const id = `carrusel-${clave}`;
@@ -118,10 +118,10 @@
 
         section.innerHTML = `
           <h2 class="text-2xl font-semibold mb-2 text-center">${titulo}</h2>
-          <div class="relative group">
+          <div class="relative group overflow-hidden">
             <button onclick="scrollCarrusel('${id}', -1)" class="hidden md:flex absolute left-2 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-white text-gray-600 rounded-full shadow p-2">&#10094;</button>
             <div id="${id}" class="scroll-container overflow-x-auto flex gap-4 pb-4 px-2 md:px-10 scroll-smooth snap-x">
-              ${imagenes.map(nombre => `
+              ${imagenes.concat(imagenes).map((nombre, i) => `
                 <img src="${nombre}" alt="${titulo}" class="h-52 md:h-72 aspect-[3/4] object-cover rounded shadow-md cursor-pointer snap-start flex-shrink-0 hover:scale-105 transition" onclick="abrirLightbox('${nombre}')">
               `).join('')}
             </div>
@@ -140,16 +140,14 @@
 
     function scrollCarrusel(id, direccion) {
       const contenedor = document.getElementById(id);
-      const scrollWidth = contenedor.scrollWidth;
-      const scrollLeft = contenedor.scrollLeft;
-      const visibleWidth = contenedor.offsetWidth;
-
-      if (direccion > 0 && scrollLeft + visibleWidth >= scrollWidth - 5) {
-        contenedor.scrollTo({ left: 0, behavior: 'smooth' });
-      } else if (direccion < 0 && scrollLeft <= 0) {
-        contenedor.scrollTo({ left: scrollWidth, behavior: 'smooth' });
+      const items = contenedor.querySelectorAll('img');
+      if (direccion > 0) {
+        contenedor.appendChild(items[0].cloneNode(true));
+        contenedor.removeChild(items[0]);
       } else {
-        contenedor.scrollBy({ left: direccion * 300, behavior: 'smooth' });
+        const ultimo = items[items.length - 1].cloneNode(true);
+        contenedor.insertBefore(ultimo, items[0]);
+        contenedor.removeChild(items[items.length - 1]);
       }
     }
 
@@ -178,3 +176,4 @@
   </script>
 </body>
 </html>
+
