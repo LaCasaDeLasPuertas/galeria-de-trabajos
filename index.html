@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Galería de Trabajos - Carpintería</title>
+  <title>Galería de Trabajos en Madera | Carpintería Artesanal</title>
+  <meta name="description" content="Explora nuestra galería de puertas de madera artesanales: puertas de entrada, contraplacadas y portones de garaje. Calidad y estilo para tu hogar.">
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
@@ -15,11 +16,11 @@
     }
   </style>
 </head>
-<body class="bg-gray-50 text-gray-800">
-  <div class="max-w-7xl mx-auto px-4 py-6 space-y-12">
+<body class="bg-white text-gray-800">
+  <div class="max-w-7xl mx-auto px-4 py-6 space-y-16">
     <h1 class="text-4xl font-bold mb-6 text-center">Galería de Trabajos</h1>
 
-    <div id="galeria"></div>
+    <div id="galeria" class="space-y-20"></div>
 
     <!-- Lightbox -->
     <div id="lightbox" class="fixed inset-0 bg-black bg-opacity-90 hidden items-center justify-center z-50">
@@ -40,50 +41,53 @@
       const id = "galeria-" + index;
       const section = document.createElement("section");
 
+      // Duplicamos imágenes para efecto infinito
+      const todas = [...imagenes, ...imagenes, ...imagenes];
+
       section.innerHTML = `
-        <div class="bg-white shadow rounded-xl p-6 space-y-4">
-          <h2 class="text-2xl font-semibold text-center">${titulo}</h2>
-          <div class="relative">
-            <button onclick="scrollCarrusel('${id}', -1)" class="hidden md:flex absolute left-2 top-1/2 -translate-y-1/2 z-10 bg-white hover:bg-gray-200 text-gray-600 rounded-full shadow p-2">
-              &#10094;
-            </button>
-            <div id="${id}" class="scroll-container overflow-x-auto flex gap-4 pb-4 px-2 md:px-10 scroll-smooth snap-x">
-              ${imagenes.map(nombre => `
-                <img 
-                  src="${nombre}" 
-                  alt="${titulo}" 
-                  class="h-52 md:h-72 aspect-[3/4] object-cover rounded-lg shadow-md cursor-pointer snap-start flex-shrink-0 hover:scale-105 transition-transform duration-300"
-                  onclick="abrirLightbox('${nombre}')"
-                >
-              `).join('')}
-            </div>
-            <button onclick="scrollCarrusel('${id}', 1)" class="hidden md:flex absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-white hover:bg-gray-200 text-gray-600 rounded-full shadow p-2">
-              &#10095;
-            </button>
+        <h2 class="text-2xl font-semibold mb-4 text-center">${titulo}</h2>
+        <div class="relative">
+          <button onclick="scrollCarrusel('${id}', -1)" class="hidden md:flex absolute left-2 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white text-gray-600 rounded-full shadow p-2">
+            &#10094;
+          </button>
+          <div id="${id}" class="scroll-container overflow-x-auto flex gap-4 pb-4 px-2 md:px-10 scroll-smooth snap-x whitespace-nowrap">
+            ${todas.map(nombre => `
+              <img 
+                src="${nombre}" 
+                alt="${titulo} - Puerta de madera artesanal" 
+                class="h-52 md:h-72 aspect-[3/4] object-cover rounded shadow-md cursor-pointer snap-start flex-shrink-0 hover:scale-105 transition"
+                onclick="abrirLightbox('${nombre}')"
+              >
+            `).join('')}
           </div>
-          <div class="text-center">
-            <a href="https://wa.me/51999999999" target="_blank" class="inline-block mt-2 bg-green-500 text-white px-6 py-2 rounded-full shadow hover:bg-green-600 transition">
-              Consultar vía WhatsApp
-            </a>
-          </div>
+          <button onclick="scrollCarrusel('${id}', 1)" class="hidden md:flex absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white text-gray-600 rounded-full shadow p-2">
+            &#10095;
+          </button>
+        </div>
+        <div class="mt-4 text-center">
+          <a href="https://wa.me/51999999999?text=Hola%2C%20quisiera%20más%20información%20sobre%20${encodeURIComponent(titulo)}" 
+             target="_blank"
+             class="inline-block bg-green-500 text-white px-6 py-2 rounded-full shadow hover:bg-green-600 transition">
+            Consultar por WhatsApp
+          </a>
         </div>
       `;
-
       galeria.appendChild(section);
     });
 
     function scrollCarrusel(id, direccion) {
       const contenedor = document.getElementById(id);
-      const items = contenedor.querySelectorAll("img");
-      const width = items[0].offsetWidth + 16;
+      const scrollStep = contenedor.querySelector("img").clientWidth + 16; // ancho + gap
+      contenedor.scrollBy({ left: direccion * scrollStep, behavior: 'smooth' });
 
-      if (direccion === 1 && contenedor.scrollLeft + contenedor.clientWidth >= contenedor.scrollWidth - 5) {
-        contenedor.scrollTo({ left: 0, behavior: "smooth" });
-      } else if (direccion === -1 && contenedor.scrollLeft === 0) {
-        contenedor.scrollTo({ left: contenedor.scrollWidth, behavior: "smooth" });
-      } else {
-        contenedor.scrollBy({ left: direccion * width, behavior: "smooth" });
-      }
+      // Si se llega al final, reajustamos instantáneamente para efecto infinito
+      setTimeout(() => {
+        if (contenedor.scrollLeft <= 0) {
+          contenedor.scrollLeft = contenedor.scrollWidth / 3;
+        } else if (contenedor.scrollLeft + contenedor.clientWidth >= contenedor.scrollWidth) {
+          contenedor.scrollLeft = contenedor.scrollWidth / 3;
+        }
+      }, 400);
     }
 
     // Lightbox
@@ -97,9 +101,15 @@
     }
 
     lightbox.addEventListener("click", () => {
-      lightbox.classList.remove("flex");
       lightbox.classList.add("hidden");
-      lightboxImg.src = "";
+      lightbox.classList.remove("flex");
+    });
+
+    // Posicionar cada carrusel en la parte media (para efecto infinito)
+    window.addEventListener("load", () => {
+      document.querySelectorAll(".scroll-container").forEach(container => {
+        container.scrollLeft = container.scrollWidth / 3;
+      });
     });
   </script>
 </body>
