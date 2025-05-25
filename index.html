@@ -21,20 +21,28 @@
       background-color: #1f2937;
       color: white;
     }
+
+    @media (max-width: 640px) {
+      header h1 {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
   </style>
 </head>
 <body class="bg-white text-gray-800">
   <!-- Encabezado -->
-  <header class="bg-black text-white py-6 text-center px-4">
+  <header class="bg-gray-900 text-white py-6 text-center px-4">
     <h1 class="text-xl sm:text-2xl font-bold leading-tight">La Casa de las Puertas - Galería de Trabajos</h1>
   </header>
 
   <main class="max-w-7xl mx-auto px-4 py-6 space-y-12">
     <!-- Filtros -->
     <div class="flex flex-wrap justify-center gap-4 mb-8">
-      <button class="filtro-btn px-4 py-2 border rounded-full text-sm font-semibold transition" onclick="filtrar('entrada')">Puertas de Entrada</button>
-      <button class="filtro-btn px-4 py-2 border rounded-full text-sm font-semibold transition" onclick="filtrar('contraplacada')">Puertas Contraplacadas</button>
-      <button class="filtro-btn px-4 py-2 border rounded-full text-sm font-semibold transition" onclick="filtrar('porton')">Portones de Garaje</button>
+      <button class="filtro-btn px-4 py-2 border rounded-full text-sm font-semibold transition bg-gray-900 text-white" onclick="filtrar('entrada')">Puertas de Entrada</button>
+      <button class="filtro-btn px-4 py-2 border rounded-full text-sm font-semibold transition bg-gray-900 text-white" onclick="filtrar('contraplacada')">Puertas Contraplacadas</button>
+      <button class="filtro-btn px-4 py-2 border rounded-full text-sm font-semibold transition bg-gray-900 text-white" onclick="filtrar('porton')">Portones de Garaje</button>
     </div>
 
     <!-- Galería -->
