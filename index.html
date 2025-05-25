@@ -14,78 +14,107 @@
     .scroll-container::-webkit-scrollbar {
       display: none;
     }
+    .fade-in {
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+    }
+    .fade-in.loaded {
+      opacity: 1;
+    }
   </style>
 </head>
 <body class="bg-white text-gray-800">
-  <div class="max-w-7xl mx-auto px-4 py-6 space-y-16">
-    <h1 class="text-4xl font-bold mb-6 text-center">Galería de Trabajos</h1>
+  <div class="max-w-7xl mx-auto px-4 py-6 space-y-10">
+    <h1 class="text-4xl font-bold text-center">Galería de Trabajos</h1>
 
-    <div id="galeria" class="space-y-20"></div>
+    <!-- Filtros / Pestañas -->
+    <div class="flex flex-wrap justify-center gap-4 mt-6">
+      <button onclick="cambiarCategoria('entrada')" class="tab-btn bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium px-4 py-2 rounded-full transition">Puertas de Entrada</button>
+      <button onclick="cambiarCategoria('contraplacadas')" class="tab-btn bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium px-4 py-2 rounded-full transition">Puertas Contraplacadas</button>
+      <button onclick="cambiarCategoria('garaje')" class="tab-btn bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium px-4 py-2 rounded-full transition">Portones de Garaje</button>
+    </div>
 
-    <!-- Lightbox -->
-    <div id="lightbox" class="fixed inset-0 bg-black bg-opacity-90 hidden items-center justify-center z-50">
-      <img id="lightbox-img" src="" class="max-h-[90%] max-w-[90%] rounded-lg shadow-lg" />
+    <!-- Carrusel único -->
+    <div class="relative">
+      <button onclick="scrollCarrusel(-1)" class="hidden md:flex absolute left-2 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white text-gray-600 rounded-full shadow p-2">
+        &#10094;
+      </button>
+      <div id="carrusel" class="scroll-container overflow-x-auto flex gap-4 pb-4 px-2 md:px-10 scroll-smooth snap-x whitespace-nowrap">
+        <!-- Imágenes se cargarán dinámicamente -->
+      </div>
+      <button onclick="scrollCarrusel(1)" class="hidden md:flex absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white text-gray-600 rounded-full shadow p-2">
+        &#10095;
+      </button>
+    </div>
+
+    <div class="text-center mt-6">
+      <a id="botonWhatsapp" href="#" target="_blank" class="inline-block bg-green-500 text-white px-6 py-2 rounded-full shadow hover:bg-green-600 transition">
+        Consultar por WhatsApp
+      </a>
     </div>
   </div>
 
+  <!-- Lightbox -->
+  <div id="lightbox" class="fixed inset-0 bg-black bg-opacity-90 hidden items-center justify-center z-50">
+    <img id="lightbox-img" src="" class="max-h-[90%] max-w-[90%] rounded-lg shadow-lg" />
+  </div>
+
   <script>
-    const secciones = {
-      "Puertas de Entrada": ["madera1", "madera2", "madera3", "madera4", "madera5", "madera6", "madera7"],
-      "Puertas Contraplacadas": ["contra1", "contra2", "contra3", "contra4", "contra5", "contra6", "contra7"],
-      "Portones de Garaje": ["porton1", "porton2", "porton3", "porton4", "porton5", "porton6", "porton7"]
+    const imagenesPorCategoria = {
+      entrada: ["madera1", "madera2", "madera3", "madera4", "madera5", "madera6", "madera7"],
+      contraplacadas: ["contra1", "contra2", "contra3", "contra4", "contra5", "contra6", "contra7"],
+      garaje: ["porton1", "porton2", "porton3", "porton4", "porton5", "porton6", "porton7"]
     };
 
-    const galeria = document.getElementById("galeria");
+    const nombres = {
+      entrada: "Puertas de Entrada",
+      contraplacadas: "Puertas Contraplacadas",
+      garaje: "Portones de Garaje"
+    };
 
-    Object.entries(secciones).forEach(([titulo, imagenes], index) => {
-      const id = "galeria-" + index;
-      const section = document.createElement("section");
+    let categoriaActual = "entrada";
 
-      // Duplicamos imágenes para efecto infinito
-      const todas = [...imagenes, ...imagenes, ...imagenes];
+    const carrusel = document.getElementById("carrusel");
+    const botonWhatsapp = document.getElementById("botonWhatsapp");
 
-      section.innerHTML = `
-        <h2 class="text-2xl font-semibold mb-4 text-center">${titulo}</h2>
-        <div class="relative">
-          <button onclick="scrollCarrusel('${id}', -1)" class="hidden md:flex absolute left-2 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white text-gray-600 rounded-full shadow p-2">
-            &#10094;
-          </button>
-          <div id="${id}" class="scroll-container overflow-x-auto flex gap-4 pb-4 px-2 md:px-10 scroll-smooth snap-x whitespace-nowrap">
-            ${todas.map(nombre => `
-              <img 
-                src="${nombre}" 
-                alt="${titulo} - Puerta de madera artesanal" 
-                class="h-52 md:h-72 aspect-[3/4] object-cover rounded shadow-md cursor-pointer snap-start flex-shrink-0 hover:scale-105 transition"
-                onclick="abrirLightbox('${nombre}')"
-              >
-            `).join('')}
-          </div>
-          <button onclick="scrollCarrusel('${id}', 1)" class="hidden md:flex absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white text-gray-600 rounded-full shadow p-2">
-            &#10095;
-          </button>
-        </div>
-        <div class="mt-4 text-center">
-          <a href="https://wa.me/51999999999?text=Hola%2C%20quisiera%20más%20información%20sobre%20${encodeURIComponent(titulo)}" 
-             target="_blank"
-             class="inline-block bg-green-500 text-white px-6 py-2 rounded-full shadow hover:bg-green-600 transition">
-            Consultar por WhatsApp
-          </a>
-        </div>
-      `;
-      galeria.appendChild(section);
-    });
+    function cargarCarrusel(categoria) {
+      carrusel.innerHTML = "";
+      const imagenes = [...imagenesPorCategoria[categoria], ...imagenesPorCategoria[categoria], ...imagenesPorCategoria[categoria]];
 
-    function scrollCarrusel(id, direccion) {
-      const contenedor = document.getElementById(id);
-      const scrollStep = contenedor.querySelector("img").clientWidth + 16; // ancho + gap
-      contenedor.scrollBy({ left: direccion * scrollStep, behavior: 'smooth' });
+      imagenes.forEach(src => {
+        const img = document.createElement("img");
+        img.src = src;
+        img.alt = `${nombres[categoria]} - Puerta de madera artesanal`;
+        img.loading = "lazy";
+        img.className = "h-52 md:h-72 aspect-[3/4] object-cover rounded shadow-md cursor-pointer snap-start flex-shrink-0 hover:scale-105 transition fade-in";
+        img.onclick = () => abrirLightbox(src);
 
-      // Si se llega al final, reajustamos instantáneamente para efecto infinito
+        img.onload = () => img.classList.add("loaded");
+
+        carrusel.appendChild(img);
+      });
+
+      // Reposicionar al centro para efecto infinito
       setTimeout(() => {
-        if (contenedor.scrollLeft <= 0) {
-          contenedor.scrollLeft = contenedor.scrollWidth / 3;
-        } else if (contenedor.scrollLeft + contenedor.clientWidth >= contenedor.scrollWidth) {
-          contenedor.scrollLeft = contenedor.scrollWidth / 3;
+        carrusel.scrollLeft = carrusel.scrollWidth / 3;
+      }, 100);
+    }
+
+    function cambiarCategoria(categoria) {
+      categoriaActual = categoria;
+      cargarCarrusel(categoria);
+      botonWhatsapp.href = `https://wa.me/51999999999?text=Hola%2C%20quisiera%20más%20información%20sobre%20${encodeURIComponent(nombres[categoria])}`;
+    }
+
+    function scrollCarrusel(direccion) {
+      const scrollStep = carrusel.querySelector("img").clientWidth + 16;
+      carrusel.scrollBy({ left: direccion * scrollStep, behavior: 'smooth' });
+
+      setTimeout(() => {
+        if (carrusel.scrollLeft <= 0) {
+          carrusel.scrollLeft = carrusel.scrollWidth / 3;
+        } else if (carrusel.scrollLeft + carrusel.clientWidth >= carrusel.scrollWidth) {
+          carrusel.scrollLeft = carrusel.scrollWidth / 3;
         }
       }, 400);
     }
@@ -105,11 +134,8 @@
       lightbox.classList.remove("flex");
     });
 
-    // Posicionar cada carrusel en la parte media (para efecto infinito)
     window.addEventListener("load", () => {
-      document.querySelectorAll(".scroll-container").forEach(container => {
-        container.scrollLeft = container.scrollWidth / 3;
-      });
+      cambiarCategoria("entrada");
     });
   </script>
 </body>
