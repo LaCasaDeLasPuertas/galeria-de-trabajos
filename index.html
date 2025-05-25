@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Galería de Trabajos en Madera | Carpintería Artesanal</title>
+  <title>Galería de Trabajos - La Casa de las Puertas</title>
   <meta name="description" content="Explora nuestra galería de puertas de madera artesanales: puertas de entrada, contraplacadas y portones de garaje. Calidad y estilo para tu hogar.">
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
@@ -21,17 +21,23 @@
     .fade-in.loaded {
       opacity: 1;
     }
+    .tab-btn {
+      @apply bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium px-4 py-2 rounded-full transition;
+    }
+    .tab-btn.active {
+      @apply bg-blue-600 text-white;
+    }
   </style>
 </head>
 <body class="bg-white text-gray-800">
   <div class="max-w-7xl mx-auto px-4 py-6 space-y-10">
-    <h1 class="text-4xl font-bold text-center">Galería de Trabajos</h1>
+    <h1 class="text-4xl font-bold text-center">Galería de Trabajos - La Casa de las Puertas</h1>
 
     <!-- Filtros / Pestañas -->
     <div class="flex flex-wrap justify-center gap-4 mt-6">
-      <button onclick="cambiarCategoria('entrada')" class="tab-btn bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium px-4 py-2 rounded-full transition">Puertas de Entrada</button>
-      <button onclick="cambiarCategoria('contraplacadas')" class="tab-btn bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium px-4 py-2 rounded-full transition">Puertas Contraplacadas</button>
-      <button onclick="cambiarCategoria('garaje')" class="tab-btn bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium px-4 py-2 rounded-full transition">Portones de Garaje</button>
+      <button id="btn-entrada" onclick="cambiarCategoria('entrada')" class="tab-btn">Puertas de Entrada</button>
+      <button id="btn-contraplacadas" onclick="cambiarCategoria('contraplacadas')" class="tab-btn">Puertas Contraplacadas</button>
+      <button id="btn-garaje" onclick="cambiarCategoria('garaje')" class="tab-btn">Portones de Garaje</button>
     </div>
 
     <!-- Carrusel único -->
@@ -104,6 +110,18 @@
       categoriaActual = categoria;
       cargarCarrusel(categoria);
       botonWhatsapp.href = `https://wa.me/51999999999?text=Hola%2C%20quisiera%20más%20información%20sobre%20${encodeURIComponent(nombres[categoria])}`;
+      actualizarBotones(categoria);
+    }
+
+    function actualizarBotones(categoria) {
+      const botones = ["entrada", "contraplacadas", "garaje"];
+      botones.forEach(cat => {
+        const btn = document.getElementById(`btn-${cat}`);
+        btn.classList.remove("active");
+        if (cat === categoria) {
+          btn.classList.add("active");
+        }
+      });
     }
 
     function scrollCarrusel(direccion) {
@@ -140,4 +158,3 @@
   </script>
 </body>
 </html>
-
