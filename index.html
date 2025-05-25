@@ -5,17 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Galería de Trabajos - Carpintería</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
+    body {
+      font-family: 'Montserrat', sans-serif;
+    }
     .scroll-container::-webkit-scrollbar {
       display: none;
     }
   </style>
 </head>
-<body class="bg-white text-gray-800">
+<body class="bg-gray-50 text-gray-800">
   <div class="max-w-7xl mx-auto px-4 py-6 space-y-12">
     <h1 class="text-4xl font-bold mb-6 text-center">Galería de Trabajos</h1>
 
-    <!-- Contenedor general -->
     <div id="galeria"></div>
 
     <!-- Lightbox -->
@@ -38,24 +41,31 @@
       const section = document.createElement("section");
 
       section.innerHTML = `
-        <h2 class="text-2xl font-semibold mb-4 text-center">${titulo}</h2>
-        <div class="relative">
-          <button onclick="scrollCarrusel('${id}', -1)" class="hidden md:flex absolute left-2 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-white text-gray-600 rounded-full shadow p-2">
-            &#10094;
-          </button>
-          <div id="${id}" class="scroll-container overflow-x-auto flex gap-4 pb-4 px-2 md:px-10 scroll-smooth snap-x">
-            ${imagenes.map(nombre => `
-              <img 
-                src="${nombre}" 
-                alt="${titulo}" 
-                class="h-52 md:h-72 aspect-[3/4] object-cover rounded shadow-md cursor-pointer snap-start flex-shrink-0 hover:scale-105 transition"
-                onclick="abrirLightbox('${nombre}')"
-              >
-            `).join('')}
+        <div class="bg-white shadow rounded-xl p-6 space-y-4">
+          <h2 class="text-2xl font-semibold text-center">${titulo}</h2>
+          <div class="relative">
+            <button onclick="scrollCarrusel('${id}', -1)" class="hidden md:flex absolute left-2 top-1/2 -translate-y-1/2 z-10 bg-white hover:bg-gray-200 text-gray-600 rounded-full shadow p-2">
+              &#10094;
+            </button>
+            <div id="${id}" class="scroll-container overflow-x-auto flex gap-4 pb-4 px-2 md:px-10 scroll-smooth snap-x">
+              ${imagenes.map(nombre => `
+                <img 
+                  src="${nombre}" 
+                  alt="${titulo}" 
+                  class="h-52 md:h-72 aspect-[3/4] object-cover rounded-lg shadow-md cursor-pointer snap-start flex-shrink-0 hover:scale-105 transition-transform duration-300"
+                  onclick="abrirLightbox('${nombre}')"
+                >
+              `).join('')}
+            </div>
+            <button onclick="scrollCarrusel('${id}', 1)" class="hidden md:flex absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-white hover:bg-gray-200 text-gray-600 rounded-full shadow p-2">
+              &#10095;
+            </button>
           </div>
-          <button onclick="scrollCarrusel('${id}', 1)" class="hidden md:flex absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-white text-gray-600 rounded-full shadow p-2">
-            &#10095;
-          </button>
+          <div class="text-center">
+            <a href="https://wa.me/51999999999" target="_blank" class="inline-block mt-2 bg-green-500 text-white px-6 py-2 rounded-full shadow hover:bg-green-600 transition">
+              Consultar vía WhatsApp
+            </a>
+          </div>
         </div>
       `;
 
@@ -64,7 +74,16 @@
 
     function scrollCarrusel(id, direccion) {
       const contenedor = document.getElementById(id);
-      contenedor.scrollBy({ left: direccion * 300, behavior: 'smooth' });
+      const items = contenedor.querySelectorAll("img");
+      const width = items[0].offsetWidth + 16;
+
+      if (direccion === 1 && contenedor.scrollLeft + contenedor.clientWidth >= contenedor.scrollWidth - 5) {
+        contenedor.scrollTo({ left: 0, behavior: "smooth" });
+      } else if (direccion === -1 && contenedor.scrollLeft === 0) {
+        contenedor.scrollTo({ left: contenedor.scrollWidth, behavior: "smooth" });
+      } else {
+        contenedor.scrollBy({ left: direccion * width, behavior: "smooth" });
+      }
     }
 
     // Lightbox
@@ -74,11 +93,15 @@
     function abrirLightbox(src) {
       lightboxImg.src = src;
       lightbox.classList.remove("hidden");
+      lightbox.classList.add("flex");
     }
 
     lightbox.addEventListener("click", () => {
+      lightbox.classList.remove("flex");
       lightbox.classList.add("hidden");
+      lightboxImg.src = "";
     });
   </script>
 </body>
 </html>
+
