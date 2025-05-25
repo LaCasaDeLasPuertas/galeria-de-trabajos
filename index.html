@@ -54,6 +54,7 @@
     </div>
   </main>
 
+  <!-- Pie de página -->
   <footer class="bg-gray-900 text-white py-12 mt-12">
     <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-12">
       <div>
@@ -67,7 +68,6 @@
           +51 948 660 856
         </p>
       </div>
-
       <div>
         <h3 class="text-xl font-bold mb-4 border-b border-white pb-2">Horarios de Atención</h3>
         <p class="flex items-start mb-1">
@@ -93,15 +93,15 @@
     const secciones = {
       entrada: {
         titulo: "Puertas de Entrada",
-        imagenes: ["madera1.jpg", "madera2.jpg", "madera3.jpg"]
+        imagenes: ["madera1", "madera2", "madera3", "madera4", "madera5", "madera6", "madera7"]
       },
       contraplacada: {
         titulo: "Puertas Contraplacadas",
-        imagenes: ["contra1.jpg", "contra2.jpg", "contra3.jpg"]
+        imagenes: ["contra1", "contra2", "contra3", "contra4", "contra5", "contra6", "contra7"]
       },
       porton: {
         titulo: "Portones de Garaje",
-        imagenes: ["porton1.jpg", "porton2.jpg", "porton3.jpg"]
+        imagenes: ["porton1", "porton2", "porton3", "porton4", "porton5", "porton6", "porton7"]
       }
     };
 
@@ -120,40 +120,34 @@
         section.innerHTML = `
           <h2 class="text-2xl font-semibold mb-2 text-center">${titulo}</h2>
           <div class="relative group overflow-hidden">
+            <button onclick="scrollCarrusel('${id}', -1)" class="hidden md:flex absolute left-2 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-white text-gray-600 rounded-full shadow p-2">&#10094;</button>
             <div id="${id}" class="scroll-container overflow-x-auto flex gap-4 pb-4 px-2 md:px-10 scroll-smooth snap-x">
-              ${imagenes.concat(imagenes).map(nombre => `
+              ${imagenes.concat(imagenes).map((nombre, i) => `
                 <img src="${nombre}" alt="${titulo}" class="h-52 md:h-72 aspect-[3/4] object-cover rounded shadow-md cursor-pointer snap-start flex-shrink-0 hover:scale-105 transition" onclick="abrirLightbox('${nombre}')">
               `).join('')}
             </div>
+            <button onclick="scrollCarrusel('${id}', 1)" class="hidden md:flex absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-white text-gray-600 rounded-full shadow p-2">&#10095;</button>
+          </div>
+          <div class="text-center">
+            <a href="https://wa.me/51948660856?text=%C2%A1Hola!%20quiero%20m%C3%A1s%20informaci%C3%B3n." target="_blank" class="inline-flex items-center gap-2 mt-2 px-6 py-2 bg-green-600 text-white rounded shadow hover:bg-green-700 transition">
+              <i class="ri-whatsapp-line text-lg"></i>
+              Consultar por WhatsApp
+            </a>
           </div>
         `;
 
         galeria.appendChild(section);
-        setTimeout(() => autoScrollCarrusel(id), 100);
       });
     }
 
-    function autoScrollCarrusel(id) {
+    renderGaleria(); // Carga inicial
+    document.querySelector('[data-categoria="entrada"]').classList.add('filtro-activo');
+
+    function scrollCarrusel(id, direccion) {
       const contenedor = document.getElementById(id);
-      let autoScroll;
-
-      function startScroll() {
-        autoScroll = setInterval(() => {
-          if (contenedor.scrollLeft + contenedor.clientWidth >= contenedor.scrollWidth) {
-            contenedor.scrollTo({ left: 0, behavior: 'smooth' });
-          } else {
-            contenedor.scrollBy({ left: 1, behavior: 'smooth' });
-          }
-        }, 30);
-      }
-
-      function stopScroll() {
-        clearInterval(autoScroll);
-      }
-
-      startScroll();
-      contenedor.addEventListener("mouseenter", stopScroll);
-      contenedor.addEventListener("mouseleave", startScroll);
+      const items = contenedor.querySelectorAll('img');
+      const itemWidth = items[0].offsetWidth + 16;
+      contenedor.scrollBy({ left: direccion * itemWidth, behavior: 'smooth' });
     }
 
     const lightbox = document.getElementById("lightbox");
@@ -174,16 +168,10 @@
       renderGaleria(categoria);
       botonesFiltro.forEach(btn => btn.classList.remove('filtro-activo'));
       const botonActivo = document.querySelector(`.filtro-btn[data-categoria="${categoria}"]`);
-      if (botonActivo) botonActivo.classList.add('filtro-activo');
-    }
-
-    // Inicializar
-    window.onload = () => {
-      renderGaleria();
-      document.querySelector('[data-categoria="entrada"]').classList.add('filtro-activo');
+      if (botonActivo) {
+        botonActivo.classList.add('filtro-activo');
+      }
     }
   </script>
 </body>
 </html>
-
-
