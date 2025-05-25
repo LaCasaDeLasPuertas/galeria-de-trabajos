@@ -32,6 +32,7 @@
   <main class="max-w-7xl mx-auto px-4 py-6 space-y-12">
     <!-- Filtros -->
     <div class="flex flex-wrap justify-center gap-4 mb-8">
+      <button class="filtro-btn px-4 py-2 border rounded-full text-sm font-semibold transition" onclick="filtrar('todo')">Todos</button>
       <button class="filtro-btn px-4 py-2 border rounded-full text-sm font-semibold transition" onclick="filtrar('entrada')">Puertas de Entrada</button>
       <button class="filtro-btn px-4 py-2 border rounded-full text-sm font-semibold transition" onclick="filtrar('contraplacada')">Puertas Contraplacadas</button>
       <button class="filtro-btn px-4 py-2 border rounded-full text-sm font-semibold transition" onclick="filtrar('porton')">Portones de Garaje</button>
@@ -140,14 +141,12 @@
     function scrollCarrusel(id, direccion) {
       const contenedor = document.getElementById(id);
       const items = contenedor.querySelectorAll('img');
-      if (direccion > 0) {
-        contenedor.appendChild(items[0].cloneNode(true));
-        contenedor.removeChild(items[0]);
-      } else {
-        const ultimo = items[items.length - 1].cloneNode(true);
-        contenedor.insertBefore(ultimo, items[0]);
-        contenedor.removeChild(items[items.length - 1]);
-      }
+      const itemWidth = items[0].offsetWidth + 16; // ancho más margen entre imágenes
+
+      contenedor.scrollBy({
+        left: direccion * itemWidth,
+        behavior: 'smooth'
+      });
     }
 
     // Lightbox
@@ -175,4 +174,3 @@
   </script>
 </body>
 </html>
-
