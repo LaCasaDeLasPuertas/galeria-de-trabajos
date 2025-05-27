@@ -13,9 +13,28 @@
       font-family: 'Montserrat', sans-serif;
     }
 
+    .scroll-container::-webkit-scrollbar {
+      display: none;
+    }
+
     .filtro-activo {
       background-color: #1f2937;
       color: white;
+    }
+
+    .active-link {
+      text-decoration: underline;
+      text-underline-offset: 4px;
+      text-decoration-thickness: 2px;
+      color: #facc15;
+    }
+
+    @media (max-width: 640px) {
+      header h1 {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
     }
   </style>
 </head>
@@ -25,56 +44,58 @@
 <header class="bg-gray-900 shadow-md">
   <div class="container mx-auto px-4 sm:px-6 lg:px-16 py-4 flex items-center justify-between">
     <a href="#" class="text-lg font-bold text-white">La Casa de las Puertas</a>
+
+    <!-- Botón para menú móvil -->
     <button id="menu-toggle" class="text-white sm:hidden focus:outline-none">
-      <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2"
+        viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
         <path d="M4 6h16M4 12h16M4 18h16" />
       </svg>
     </button>
+
+    <!-- Navegación -->
     <nav id="menu" class="hidden sm:flex space-x-6">
       <a href="https://lacasadelaspuertas.github.io/Inicio/" class="text-white hover:text-gray-300">Inicio</a>
       <a href="https://lacasadelaspuertas.github.io/galeria-de-trabajos/" class="text-white hover:text-gray-300 active-link">Puertas</a>
       <a href="https://lacasadelaspuertas.github.io/tienda-cerraduras/" class="text-white hover:text-gray-300">Cerraduras</a>
     </nav>
   </div>
+
+  <!-- Menú móvil -->
   <div id="mobile-menu" class="sm:hidden hidden px-4 pb-4">
     <a href="https://lacasadelaspuertas.github.io/Inicio/" class="block text-white py-2 hover:text-gray-300">Inicio</a>
     <a href="https://lacasadelaspuertas.github.io/galeria-de-trabajos/" class="block text-white py-2 hover:text-gray-300 active-link">Puertas</a>
     <a href="https://lacasadelaspuertas.github.io/tienda-cerraduras/" class="block text-white py-2 hover:text-gray-300">Cerraduras</a>
   </div>
+
   <script>
     document.getElementById('menu-toggle').addEventListener('click', function () {
-      document.getElementById('mobile-menu').classList.toggle('hidden');
+      const menu = document.getElementById('mobile-menu');
+      menu.classList.toggle('hidden');
     });
   </script>
 </header>
 
-<main class="max-w-7xl mx-auto px-4 py-10">
-  <div class="mb-8 text-center">
-    <h1 class="text-3xl font-bold mb-4">Galería de Trabajos</h1>
-    <div class="flex flex-wrap justify-center gap-4">
-      <button class="filtro-btn px-4 py-2 border rounded-full text-sm font-semibold transition" data-categoria="entrada" onclick="filtrar('entrada')">Puertas de Entrada</button>
-      <button class="filtro-btn px-4 py-2 border rounded-full text-sm font-semibold transition" data-categoria="contraplacada" onclick="filtrar('contraplacada')">Puertas Contraplacadas</button>
-      <button class="filtro-btn px-4 py-2 border rounded-full text-sm font-semibold transition" data-categoria="porton" onclick="filtrar('porton')">Portones de Garaje</button>
-    </div>
+<main class="max-w-7xl mx-auto px-4 py-6 space-y-12">
+  <h1 class="text-3xl font-bold text-center mb-6">Galería de Trabajos</h1>
+
+  <!-- Filtros -->
+  <div class="flex flex-wrap justify-center gap-4 mb-8">
+    <button class="filtro-btn px-4 py-2 border rounded-full text-sm font-semibold transition" data-categoria="entrada" onclick="filtrar('entrada')">Puertas de Entrada</button>
+    <button class="filtro-btn px-4 py-2 border rounded-full text-sm font-semibold transition" data-categoria="contraplacada" onclick="filtrar('contraplacada')">Puertas Contraplacadas</button>
+    <button class="filtro-btn px-4 py-2 border rounded-full text-sm font-semibold transition" data-categoria="porton" onclick="filtrar('porton')">Portones de Garaje</button>
   </div>
 
-  <div id="galeria" class="columns-1 sm:columns-2 md:columns-3 gap-4 space-y-4 px-2"></div>
+  <!-- Galería -->
+  <div id="galeria"></div>
 
-  <!-- WhatsApp general -->
-  <div class="text-center mt-10">
-    <a href="https://wa.me/51948660856?text=%C2%A1Hola!%20quiero%20m%C3%A1s%20informaci%C3%B3n." target="_blank" class="inline-flex items-center gap-2 px-6 py-3 bg-green-600 text-white rounded shadow hover:bg-green-700 transition">
-      <i class="ri-whatsapp-line text-xl"></i>
-      Consultar por WhatsApp
-    </a>
+  <!-- Lightbox -->
+  <div id="lightbox" class="fixed inset-0 bg-black bg-opacity-90 hidden items-center justify-center z-50">
+    <img id="lightbox-img" src="" class="max-h-[90%] max-w-[90%] rounded-lg shadow-lg mx-auto" />
   </div>
 </main>
 
-<!-- Lightbox -->
-<div id="lightbox" class="fixed inset-0 bg-black bg-opacity-90 hidden items-center justify-center z-50">
-  <img id="lightbox-img" src="" class="max-h-[90%] max-w-[90%] rounded-lg shadow-lg mx-auto" />
-</div>
-
-<!-- Footer (sin cambios) -->
+<!-- Pie de página -->
 <footer class="bg-gray-900 text-white py-12 mt-12">
   <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-12">
     <div>
@@ -111,27 +132,54 @@
 
 <script>
   const secciones = {
-    entrada: ["madera1", "madera2", "madera3", "madera4", "madera5", "madera6", "madera7"],
-    contraplacada: ["contra1", "contra2", "contra3", "contra4", "contra5", "contra6", "contra7"],
-    porton: ["porton1", "porton2", "porton3", "porton4", "porton5", "porton6", "porton7"]
+    entrada: {
+      titulo: "Puertas de Entrada",
+      imagenes: ["madera1", "madera2", "madera3", "madera4", "madera5", "madera6", "madera7"]
+    },
+    contraplacada: {
+      titulo: "Puertas Contraplacadas",
+      imagenes: ["contra1", "contra2", "contra3", "contra4", "contra5", "contra6", "contra7"]
+    },
+    porton: {
+      titulo: "Portones de Garaje",
+      imagenes: ["porton1", "porton2", "porton3", "porton4", "porton5", "porton6", "porton7"]
+    }
   };
 
   const galeria = document.getElementById("galeria");
-  const lightbox = document.getElementById("lightbox");
-  const lightboxImg = document.getElementById("lightbox-img");
-  const botonesFiltro = document.querySelectorAll('.filtro-btn');
 
-  function renderGaleria(categoria = 'entrada') {
+  function renderGaleria(filtro = 'entrada') {
     galeria.innerHTML = '';
-    secciones[categoria].forEach(nombre => {
-      const img = document.createElement('img');
-      img.src = nombre;
-      img.alt = "Imagen de trabajo";
-      img.className = "w-full rounded shadow-md hover:scale-105 transition cursor-pointer";
-      img.onclick = () => abrirLightbox(nombre);
-      galeria.appendChild(img);
+    Object.entries(secciones).forEach(([clave, { titulo, imagenes }]) => {
+      if (filtro !== 'todo' && filtro !== clave) return;
+
+      const section = document.createElement("section");
+      section.className = "space-y-4";
+
+      section.innerHTML = `
+        <h2 class="text-2xl font-semibold mb-4 text-center">${titulo}</h2>
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          ${imagenes.map(nombre => `
+            <img src="${nombre}" alt="${titulo}" class="w-full h-auto max-h-72 object-contain rounded shadow-md cursor-pointer hover:scale-105 transition" onclick="abrirLightbox('${nombre}')">
+          `).join('')}
+        </div>
+        <div class="text-center">
+          <a href="https://wa.me/51948660856?text=%C2%A1Hola!%20quiero%20m%C3%A1s%20informaci%C3%B3n." target="_blank" class="inline-flex items-center gap-2 mt-2 px-6 py-2 bg-green-600 text-white rounded shadow hover:bg-green-700 transition">
+            <i class="ri-whatsapp-line text-lg"></i>
+            Consultar por WhatsApp
+          </a>
+        </div>
+      `;
+
+      galeria.appendChild(section);
     });
   }
+
+  renderGaleria(); // Carga inicial
+  document.querySelector('[data-categoria="entrada"]').classList.add('filtro-activo');
+
+  const lightbox = document.getElementById("lightbox");
+  const lightboxImg = document.getElementById("lightbox-img");
 
   function abrirLightbox(src) {
     lightboxImg.src = src;
@@ -142,15 +190,16 @@
     lightbox.classList.add("hidden");
   });
 
+  const botonesFiltro = document.querySelectorAll('.filtro-btn');
+
   function filtrar(categoria) {
     renderGaleria(categoria);
     botonesFiltro.forEach(btn => btn.classList.remove('filtro-activo'));
     const botonActivo = document.querySelector(`.filtro-btn[data-categoria="${categoria}"]`);
-    if (botonActivo) botonActivo.classList.add('filtro-activo');
+    if (botonActivo) {
+      botonActivo.classList.add('filtro-activo');
+    }
   }
-
-  renderGaleria();
-  document.querySelector('[data-categoria="entrada"]').classList.add('filtro-activo');
 </script>
 
 </body>
