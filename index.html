@@ -67,11 +67,7 @@
       <button class="filtro-btn px-4 py-2 border rounded-full text-sm font-semibold transition" data-categoria="digital" onclick="filtrar('digital')">Garaje</button>
     </div>
 
-    <div class="relative">
-      <button onclick="prevSlide()" class="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 bg-white p-2 rounded-full shadow-md hover:bg-gray-200"><i class="ri-arrow-left-s-line"></i></button>
-      <div id="carrusel" class="grid gap-4 grid-cols-2 md:grid-cols-4 overflow-hidden"></div>
-      <button onclick="nextSlide()" class="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 bg-white p-2 rounded-full shadow-md hover:bg-gray-200"><i class="ri-arrow-right-s-line"></i></button>
-    </div>
+    <div id="contenedor-productos" class="grid gap-4 grid-cols-2 md:grid-cols-4"></div>
   </main>
 
   <footer class="bg-gray-900 text-white py-12 mt-12">
@@ -110,54 +106,51 @@
 
   <script>
     const productos = [
-      { nombre: "", descripcion: "", precio: "", imagen: "madera1", link: "https://wa.me/51948660856?text=Estoy+interesado+en+la+Cerradura+YL1", categoria: "entrada" },
-      { nombre: "", descripcion: "", precio: "", imagen: "madera2", link: "https://wa.me/51948660856?text=Estoy+interesado+en+la+Cerradura+Interior", categoria: "entrada" },
-      { nombre: "G60 Ondeado Ac Inox", descripcion: "Cerradura de embutir CANTOL, 3 golpes.", precio: "S/ 250.00", imagen: "onda", link: "https://wa.me/51948660856?text=Estoy+interesado+en+la+Cerradura+Interior", categoria: "entrada" },
-      { nombre: "Cantol Bold Digital", descripcion: "Cerradura inteligente, se abre con bluetooth y PIN.", precio: "S/ 1599.00", imagen: "cantolbold", link: "https://wa.me/51948660856?text=Estoy+interesado+en+la+Cerradura+Digital", categoria: "digital" }
+      {
+        imagen: "madera-gpt1",
+        link: "https://wa.me/51948660856?text=Estoy+interesado+en+esta+puerta",
+        categoria: "entrada"
+      },
+      {
+        imagen: "madera-gpt2",
+        link: "https://wa.me/51948660856?text=Estoy+interesado+en+esta+puerta",
+        categoria: "entrada"
+      },
+      {
+        imagen: "garaje1.jpg",
+        link: "https://wa.me/51948660856?text=Estoy+interesado+en+esta+puerta+de+garaje",
+        categoria: "digital"
+      }
     ];
 
-    let indice = 0;
-    let productosFiltrados = [];
-    const carrusel = document.getElementById('carrusel');
+    const contenedor = document.getElementById('contenedor-productos');
+    const botonesFiltro = document.querySelectorAll('.filtro-btn');
 
-    function renderCarrusel() {
-      carrusel.innerHTML = '';
-      for (let i = 0; i < 4; i++) {
-        const producto = productosFiltrados[(indice + i) % productosFiltrados.length];
+    function renderizarProductos(categoria) {
+      contenedor.innerHTML = '';
+      const productosFiltrados = productos.filter(p => p.categoria === categoria);
+      productosFiltrados.forEach(producto => {
         const card = document.createElement('div');
         card.className = 'bg-white shadow-md rounded-lg overflow-hidden p-2 flex flex-col text-sm transform transition-transform duration-300 hover:scale-105 hover:shadow-lg';
         card.innerHTML = `
-          <img src="${producto.imagen}" alt="${producto.nombre}" class="aspect-square object-cover w-full rounded mb-3">
-          <h3 class="text-base font-semibold">${producto.nombre}</h3>
-          <p class="text-xs text-gray-600 mb-1">${producto.descripcion}</p>
-          <p class="font-semibold text-yellow-600 mb-2">${producto.precio}</p>
+          <img src="${producto.imagen}" alt="Puerta" class="aspect-square object-cover w-full rounded mb-3">
           <a href="${producto.link}" target="_blank" class="mt-auto text-xs px-2 py-1 bg-green-600 text-white rounded hover:bg-green-700 transition flex items-center justify-center gap-1">
             <i class="ri-whatsapp-line text-base"></i> Consultar
-          </a>`;
-        carrusel.appendChild(card);
-      }
+          </a>
+        `;
+        contenedor.appendChild(card);
+      });
     }
 
     function filtrar(categoria) {
-      productosFiltrados = productos.filter(p => p.categoria === categoria);
-      indice = 0;
-      renderCarrusel();
-      document.querySelectorAll('.filtro-btn').forEach(btn => btn.classList.remove('filtro-activo'));
+      renderizarProductos(categoria);
+      botonesFiltro.forEach(btn => btn.classList.remove('filtro-activo'));
       const btnActivo = document.querySelector(`.filtro-btn[data-categoria="${categoria}"]`);
       if (btnActivo) btnActivo.classList.add('filtro-activo');
-    }
-
-    function nextSlide() {
-      indice = (indice + 1) % productosFiltrados.length;
-      renderCarrusel();
-    }
-
-    function prevSlide() {
-      indice = (indice - 1 + productosFiltrados.length) % productosFiltrados.length;
-      renderCarrusel();
     }
 
     filtrar('entrada');
   </script>
 </body>
 </html>
+
