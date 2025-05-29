@@ -3,204 +3,239 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Galería de Trabajos</title>
+  <title>Galeria de trabajos</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
-
-    body {
-      font-family: 'Montserrat', sans-serif;
-    }
-
-    .scroll-container::-webkit-scrollbar {
-      display: none;
-    }
-
-    .filtro-activo {
-      background-color: #1f2937;
-      color: white;
-    }
-
     .active-link {
       text-decoration: underline;
       text-underline-offset: 4px;
       text-decoration-thickness: 2px;
-      color: #facc15;
+      color: #facc15 !important;
     }
-
-    @media (max-width: 640px) {
-      header h1 {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
+    .font-montserrat {
+      font-family: 'Montserrat', sans-serif;
+    }
+    .filtro-activo {
+      background-color: #1f2937;
+      color: white;
     }
   </style>
 </head>
-<body class="bg-white text-gray-800">
+<body class="bg-gray-100 font-montserrat">
+  <!-- Header -->
+  <header class="bg-gray-900 shadow-md">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-16 py-4 flex items-center justify-between">
+      <a href="#" class="text-lg font-bold text-white">La Casa de las Puertas</a>
+      <button id="menu-toggle" class="text-white sm:hidden focus:outline-none">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2"
+          viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+      <nav id="menu" class="hidden sm:flex space-x-6">
+        <a href="https://lacasadelaspuertas.github.io/Inicio/" class="text-white hover:text-gray-300">Inicio</a>
+        <a href="https://lacasadelaspuertas.github.io/galeria-de-trabajos/" class="text-white hover:text-gray-300">Puertas</a>
+        <a href="https://lacasadelaspuertas.github.io/tienda-cerraduras/" class="text-white hover:text-gray-300">Cerraduras</a>
+      </nav>
+    </div>
+    <div id="mobile-menu" class="sm:hidden hidden px-4 pb-4">
+      <a href="https://lacasadelaspuertas.github.io/Inicio/" class="block text-white py-2 hover:text-gray-300">Inicio</a>
+      <a href="https://lacasadelaspuertas.github.io/galeria-de-trabajos/" class="block text-white py-2 hover:text-gray-300">Puertas</a>
+      <a href="https://lacasadelaspuertas.github.io/tienda-cerraduras/" class="block text-white py-2 hover:text-gray-300">Cerraduras</a>
+    </div>
+    <script>
+      document.getElementById('menu-toggle').addEventListener('click', function () {
+        const menu = document.getElementById('mobile-menu');
+        menu.classList.toggle('hidden');
+      });
+      const currentUrl = window.location.href;
+      document.querySelectorAll('a').forEach(link => {
+        if (link.href === currentUrl) {
+          link.classList.add('active-link');
+        }
+      });
+    </script>
+  </header>
 
-<!-- Header -->
-<header class="bg-gray-900 shadow-md">
-  <div class="container mx-auto px-4 sm:px-6 lg:px-16 py-4 flex items-center justify-between">
-    <a href="#" class="text-lg font-bold text-white">La Casa de las Puertas</a>
+  <main class="max-w-7xl mx-auto px-4 py-6 space-y-12">
+    <h2 class="text-2xl sm:text-3xl font-bold text-center text-gray-800 mb-2 font-montserrat">Nuestras Puertas</h2>
 
-    <!-- Botón para menú móvil -->
-    <button id="menu-toggle" class="text-white sm:hidden focus:outline-none">
-      <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2"
-        viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M4 6h16M4 12h16M4 18h16" />
-      </svg>
-    </button>
+    <div class="flex justify-center flex-wrap gap-3 mb-6">
+      <button class="filtro-btn px-4 py-2 border rounded-full text-sm font-semibold transition" data-categoria="entrada" onclick="filtrar('entrada')">Madera</button>
+      <button class="filtro-btn px-4 py-2 border rounded-full text-sm font-semibold transition" data-categoria="interior" onclick="filtrar('interior')">Contraplacada</button>
+      <button class="filtro-btn px-4 py-2 border rounded-full text-sm font-semibold transition" data-categoria="digital" onclick="filtrar('digital')">Garaje</button>
+    </div>
 
-    <!-- Navegación -->
-    <nav id="menu" class="hidden sm:flex space-x-6">
-      <a href="https://lacasadelaspuertas.github.io/Inicio/" class="text-white hover:text-gray-300">Inicio</a>
-      <a href="https://lacasadelaspuertas.github.io/galeria-de-trabajos/" class="text-white hover:text-gray-300 active-link">Puertas</a>
-      <a href="https://lacasadelaspuertas.github.io/tienda-cerraduras/" class="text-white hover:text-gray-300">Cerraduras</a>
-    </nav>
-  </div>
+    <div id="contenedor-productos" class="grid gap-4 grid-cols-2 md:grid-cols-4"></div>
+  </main>
 
-  <!-- Menú móvil -->
-  <div id="mobile-menu" class="sm:hidden hidden px-4 pb-4">
-    <a href="https://lacasadelaspuertas.github.io/Inicio/" class="block text-white py-2 hover:text-gray-300">Inicio</a>
-    <a href="https://lacasadelaspuertas.github.io/galeria-de-trabajos/" class="block text-white py-2 hover:text-gray-300 active-link">Puertas</a>
-    <a href="https://lacasadelaspuertas.github.io/tienda-cerraduras/" class="block text-white py-2 hover:text-gray-300">Cerraduras</a>
-  </div>
+  <footer class="bg-gray-900 text-white py-12 mt-12">
+    <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-12">
+      <div>
+        <h3 class="text-xl font-bold mb-4 border-b border-white pb-2">Información de Contacto</h3>
+        <p class="flex items-start mb-3">
+          <i class="ri-map-pin-line text-white mr-2 mt-1"></i>
+          Av. Tingo María 1338, Breña, Lima, Perú
+        </p>
+        <p class="flex items-start">
+          <i class="ri-phone-line text-white mr-2 mt-1"></i>
+          +51 948 660 856
+        </p>
+      </div>
+      <div>
+        <h3 class="text-xl font-bold mb-4 border-b border-white pb-2">Horarios de Atención</h3>
+        <p class="flex items-start mb-1">
+          <i class="ri-time-line text-white mr-2 mt-1"></i>
+          Lunes a Viernes: 7:00 AM - 5:00 PM
+        </p>
+        <p class="flex items-start mb-1">
+          <i class="ri-time-line text-white mr-2 mt-1"></i>
+          Sábados: 7:00 AM - 1:00 PM
+        </p>
+        <p class="flex items-start mb-3">
+          <i class="ri-time-line text-white mr-2 mt-1"></i>
+          Domingos: Cerrado
+        </p>
+      </div>
+    </div>
+    <div class="border-t border-gray-800 pt-6 text-center text-sm text-gray-400">
+      <p>© 2025 La Casa de las Puertas. Todos los derechos reservados.</p>
+    </div>
+  </footer>
 
   <script>
-    document.getElementById('menu-toggle').addEventListener('click', function () {
-      const menu = document.getElementById('mobile-menu');
-      menu.classList.toggle('hidden');
-    });
-  </script>
-</header>
+    const productos = [
+      {
+        nombre: "",
+        descripcion: "",
+        precio: "",
+        imagen: "madera1",
+        link: "https://wa.me/51948660856?text=Estoy+interesado+en+la+Cerradura+YL1",
+        categoria: "entrada"
+      },
+      {
+        nombre: "",
+        descripcion: "",
+        precio: "",
+        imagen: "madera2",
+        link: "https://wa.me/51948660856?text=Estoy+interesado+en+la+Cerradura+Interior",
+        categoria: "entrada"
+      },
+      {
+        nombre: "G60 Ondeado Ac Inox",
+        descripcion: "Cerradura de embutir CANTOL, 3 golpes.",
+        precio: "S/ 250.00",
+        imagen: "onda",
+        link: "https://wa.me/51948660856?text=Estoy+interesado+en+la+Cerradura+Interior",
+        categoria: "entrada"
+      },
+      {
+        nombre: "G60 Estandár Ac Inox",
+        descripcion: "Cerradura de embutir CANTOL, 3 golpes.",
+        precio: "S/ 240.00",
+        imagen: "estandar-acinox",
+        link: "https://wa.me/51948660856?text=Estoy+interesado+en+la+Cerradura+Interior",
+        categoria: "entrada"
+      },
+      {
+        nombre: "G60 Estandar Negro Mate",
+        descripcion: "Cerradura de embutir CANTOL, 3 golpes.",
+        precio: "S/ 240.00",
+        imagen: "estandar-negro",
+        link: "https://wa.me/51948660856?text=Estoy+interesado+en+la+Cerradura+Interior",
+        categoria: "entrada"
+      },
+      {
+        nombre: "G60 Redonda Ac Inox",
+        descripcion: "Cerradura de embutir CANTOL, 3 golpes.",
+        precio: "S/ 240.00",
+        imagen: "redonda",
+        link: "https://wa.me/51948660856?text=Estoy+interesado+en+la+Cerradura+Interior",
+        categoria: "entrada"
+      },
+      {
+        nombre: "G60 Clasica Bronce Pulido",
+        descripcion: "Cerradura de embutir CANTOL, 3 golpes.",
+        precio: "S/ 285.00",
+        imagen: "clasica-dorado",
+        link: "https://wa.me/51948660856?text=Estoy+interesado+en+la+Cerradura+Digital",
+        categoria: "entrada"
+      },
+      {
+        nombre: "G60 Moderna Bronce Pulido",
+        descripcion: "Cerradura de embutir CANTOL, 3 golpes.",
+        precio: "S/ 285.00",
+        imagen: "moderna-dorado",
+        link: "https://wa.me/51948660856?text=Estoy+interesado+en+la+Cerradura+Digital",
+        categoria: "entrada"
+      },
+      {
+        nombre: "G60 Moderna Bronce Antiguo",
+        descripcion: "Cerradura de embutir CANTOL, 3 golpes.",
+        precio: "S/ 285.00",
+        imagen: "moderna-ba",
+        link: "https://wa.me/51948660856?text=Estoy+interesado+en+la+Cerradura+Digital",
+        categoria: "entrada"
+      },
+      {
+        nombre: "S900",
+        descripcion: "Cerradura de Sobreponer CANTOL, blindada. Vive tranquilo, con maxima seguridad.",
+        precio: "S/ 99.00",
+        imagen: "s900",
+        link: "https://wa.me/51948660856?text=Estoy+interesado+en+la+Cerradura+Digital",
+        categoria: "entrada"
+      },
+      {
+        nombre: "Tranca",
+        descripcion: "Tranca CANTOL.",
+        precio: "S/ 199.00",
+        imagen: "tranca",
+        link: "https://wa.me/51948660856?text=Estoy+interesado+en+la+Cerradura+Digital",
+        categoria: "entrada"
+      },
+      {
+        nombre: "Cantol Bold Digital",
+        descripcion: "Cerradura inteligente, se abre con bluetooth y PIN. Historial de accesos. Cerradura de embutir de 3 golpes. Disponible con manija Cuadrada y Estandar.",
+        precio: "S/ 1599.00",
+        imagen: "cantolbold",
+        link: "https://wa.me/51948660856?text=Estoy+interesado+en+la+Cerradura+Digital",
+        categoria: "digital"
+      }
+    ];
 
-<main class="max-w-7xl mx-auto px-4 py-6 space-y-12">
-  <h1 class="text-3xl font-bold text-center mb-6">Galería de Trabajos</h1>
+    const contenedor = document.getElementById('contenedor-productos');
+    const botonesFiltro = document.querySelectorAll('.filtro-btn');
 
-  <!-- Filtros -->
-  <div class="flex flex-wrap justify-center gap-4 mb-8">
-    <button class="filtro-btn px-4 py-2 border rounded-full text-sm font-semibold transition" data-categoria="entrada" onclick="filtrar('entrada')">Puertas de Entrada</button>
-    <button class="filtro-btn px-4 py-2 border rounded-full text-sm font-semibold transition" data-categoria="contraplacada" onclick="filtrar('contraplacada')">Puertas Contraplacadas</button>
-    <button class="filtro-btn px-4 py-2 border rounded-full text-sm font-semibold transition" data-categoria="porton" onclick="filtrar('porton')">Portones de Garaje</button>
-  </div>
+    function renderizarProductos(categoria) {
+      contenedor.innerHTML = '';
+      const productosFiltrados = productos.filter(p => p.categoria === categoria);
+      productosFiltrados.forEach(producto => {
+        const card = document.createElement('div');
+       card.className = 'bg-white shadow-md rounded-lg overflow-hidden p-2 flex flex-col text-sm transform transition-transform duration-300 hover:scale-105 hover:shadow-lg';
 
-  <!-- Galería -->
-  <div id="galeria"></div>
-
-  <!-- Lightbox -->
-  <div id="lightbox" class="fixed inset-0 bg-black bg-opacity-90 hidden items-center justify-center z-50">
-    <img id="lightbox-img" src="" class="max-h-[90%] max-w-[90%] rounded-lg shadow-lg mx-auto" />
-  </div>
-</main>
-
-<!-- Pie de página -->
-<footer class="bg-gray-900 text-white py-12 mt-12">
-  <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-12">
-    <div>
-      <h3 class="text-xl font-bold mb-4 border-b border-white pb-2">Información de Contacto</h3>
-      <p class="flex items-start mb-3">
-        <i class="ri-map-pin-line text-white mr-2 mt-1"></i>
-        Av. Tingo María 1338, Breña, Lima, Perú
-      </p>
-      <p class="flex items-start">
-        <i class="ri-phone-line text-white mr-2 mt-1"></i>
-        +51 948 660 856
-      </p>
-    </div>
-    <div>
-      <h3 class="text-xl font-bold mb-4 border-b border-white pb-2">Horarios de Atención</h3>
-      <p class="flex items-start mb-1">
-        <i class="ri-time-line text-white mr-2 mt-1"></i>
-        Lunes a Viernes: 7:00 AM - 5:00 PM
-      </p>
-      <p class="flex items-start mb-1">
-        <i class="ri-time-line text-white mr-2 mt-1"></i>
-        Sábados: 7:00 AM - 1:00 PM
-      </p>
-      <p class="flex items-start mb-3">
-        <i class="ri-time-line text-white mr-2 mt-1"></i>
-        Domingos: Cerrado
-      </p>
-    </div>
-  </div>
-  <div class="border-t border-gray-800 pt-6 text-center text-sm text-gray-400">
-    <p>© 2025 La Casa de las Puertas. Todos los derechos reservados.</p>
-  </div>
-</footer>
-
-<script>
-  const secciones = {
-    entrada: {
-      titulo: "Puertas de Entrada",
-      imagenes: ["madera1", "madera2", "madera3", "madera4", "madera5", "madera6", "madera7"]
-    },
-    contraplacada: {
-      titulo: "Puertas Contraplacadas",
-      imagenes: ["contra1", "contra2", "contra3", "contra4", "contra5", "contra6", "contra7"]
-    },
-    porton: {
-      titulo: "Portones de Garaje",
-      imagenes: ["porton1", "porton2", "porton3", "porton4", "porton5", "porton6", "porton7"]
-    }
-  };
-
-  const galeria = document.getElementById("galeria");
-
-  function renderGaleria(filtro = 'entrada') {
-    galeria.innerHTML = '';
-    Object.entries(secciones).forEach(([clave, { titulo, imagenes }]) => {
-      if (filtro !== 'todo' && filtro !== clave) return;
-
-      const section = document.createElement("section");
-      section.className = "space-y-4";
-
-      section.innerHTML = `
-        <h2 class="text-2xl font-semibold mb-4 text-center">${titulo}</h2>
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          ${imagenes.map(nombre => `
-            <img src="${nombre}" alt="${titulo}" class="w-full h-auto max-h-72 object-contain rounded shadow-md cursor-pointer hover:scale-105 transition" onclick="abrirLightbox('${nombre}')">
-          `).join('')}
-        </div>
-        <div class="text-center">
-          <a href="https://wa.me/51948660856?text=%C2%A1Hola!%20quiero%20m%C3%A1s%20informaci%C3%B3n." target="_blank" class="inline-flex items-center gap-2 mt-2 px-6 py-2 bg-green-600 text-white rounded shadow hover:bg-green-700 transition">
-            <i class="ri-whatsapp-line text-lg"></i>
-            Consultar por WhatsApp
+        card.innerHTML = `
+          <img src="${producto.imagen}" alt="${producto.nombre}" class="aspect-square object-cover w-full rounded mb-3">
+          <h3 class="text-base font-semibold">${producto.nombre}</h3>
+          <p class="text-xs text-gray-600 mb-1">${producto.descripcion}</p>
+          <p class="font-semibold text-yellow-600 mb-2">${producto.precio}</p>
+          <a href="${producto.link}" target="_blank" class="mt-auto text-xs px-2 py-1 bg-green-600 text-white rounded hover:bg-green-700 transition flex items-center justify-center gap-1">
+            <i class="ri-whatsapp-line text-base"></i> Consultar
           </a>
-        </div>
-      `;
-
-      galeria.appendChild(section);
-    });
-  }
-
-  renderGaleria(); // Carga inicial
-  document.querySelector('[data-categoria="entrada"]').classList.add('filtro-activo');
-
-  const lightbox = document.getElementById("lightbox");
-  const lightboxImg = document.getElementById("lightbox-img");
-
-  function abrirLightbox(src) {
-    lightboxImg.src = src;
-    lightbox.classList.remove("hidden");
-  }
-
-  lightbox.addEventListener("click", () => {
-    lightbox.classList.add("hidden");
-  });
-
-  const botonesFiltro = document.querySelectorAll('.filtro-btn');
-
-  function filtrar(categoria) {
-    renderGaleria(categoria);
-    botonesFiltro.forEach(btn => btn.classList.remove('filtro-activo'));
-    const botonActivo = document.querySelector(`.filtro-btn[data-categoria="${categoria}"]`);
-    if (botonActivo) {
-      botonActivo.classList.add('filtro-activo');
+        `;
+        contenedor.appendChild(card);
+      });
     }
-  }
-</script>
 
+    function filtrar(categoria) {
+      renderizarProductos(categoria);
+      botonesFiltro.forEach(btn => btn.classList.remove('filtro-activo'));
+      const btnActivo = document.querySelector(`.filtro-btn[data-categoria="${categoria}"]`);
+      if (btnActivo) btnActivo.classList.add('filtro-activo');
+    }
+
+    filtrar('entrada');
+  </script>
 </body>
 </html>
